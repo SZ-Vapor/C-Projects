@@ -13,7 +13,6 @@
 
 
 
-
 /**
  * Finds the number of integers present in the input file
  * @param inputFile The file to count ints from
