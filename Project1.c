@@ -20,12 +20,12 @@
  * @return The number of individual integers in the file
  */
 int getNumberOfInts(char *inputFile) {
-    int array[100000];//placeholder number
-    FILE *file = fopen(inputFile, "r");
+    int intArr[100000];//placeholder number. Hopefully no more than 100,000 integers in the file
+    FILE *inputF = fopen(inputFile, "r");
     int count = 0;
-    while (count < sizeof(array) / sizeof(array[0]) && fscanf(file, "%d", &array[count]) == 1)//increments count for every integer in the text file
-        count++;
-    fclose(file);
+    while (count < sizeof(intArr) / sizeof(intArr[0]) && fscanf(inputF, "%d", &intArr[count]) == 1)
+        count++;//increments count for every integer in the text file
+    fclose(inputF);
     return count;
 }
 
@@ -39,9 +39,9 @@ int getNumberOfInts(char *inputFile) {
 long **multiplyMatrices(int numInts, long **matrix1, long **matrix2) {
     long entrySum = 0;
 
-    long **matrixProduct = malloc(5 * sizeof(*matrixProduct));
+    long **matrixProduct = malloc(5 * sizeof(matrixProduct));
     for (int i = 0; i < 5; i++) {
-        matrixProduct[i] = malloc(5 * sizeof(*matrixProduct[i]));
+        matrixProduct[i] = malloc(5 * sizeof(matrixProduct[i]));
     }
 
     for (int i = 0; i < 5; i++) {
@@ -64,9 +64,9 @@ long **multiplyMatrices(int numInts, long **matrix1, long **matrix2) {
  */
 long **makeMatrix1(char *inputFile, int numInts) {
     FILE *inputF = fopen(inputFile, "r");
-    long **matrix = malloc(5 * sizeof(*matrix));
+    long **matrix = malloc(5 * sizeof(matrix));
     for (int i = 0; i < 5; i++) {
-        matrix[i] = malloc(numInts * sizeof(*matrix[i]));
+        matrix[i] = malloc(numInts * sizeof(matrix[i]));
     }
 
     for (int i = 0; i < 5; i++) {
@@ -86,9 +86,9 @@ long **makeMatrix1(char *inputFile, int numInts) {
  */
 long **makeMatrix2(char *inputFile, int numInts) {
     FILE *inputF = fopen(inputFile, "r");
-    long **matrix = malloc(numInts * sizeof(*matrix));
+    long **matrix = malloc(numInts * sizeof(matrix));
     for (int i = 0; i < numInts; i++) {
-        matrix[i] = malloc(5 * sizeof(*matrix[i]));
+        matrix[i] = malloc(5 * sizeof(matrix[i]));
     }
 
     for (int i = 0; i < numInts; i++) {
@@ -110,17 +110,17 @@ long **makeMatrix2(char *inputFile, int numInts) {
  * @param title The Matrix's name (ie. 'Matrix 1')
  * @return None
  */
-writeMatrix(const char *outputFile, char *write_orAppend, int rows, int columns, long **matrix, char *title) {
+writeMatrix(char *outputFile, char *write_orAppend, int rows, int columns, long **matrix, char *matrixName) {
 
-    FILE *myOutputF = fopen(outputFile, write_orAppend);
-    fprintf(myOutputF, "\n%s%s\n", title, ":");
+    FILE *outputF = fopen(outputFile, write_orAppend);
+    fprintf(outputF, "\n%s%s\n", matrixName, ":");
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            fprintf(myOutputF, "%ld ", matrix[i][j]);
+            fprintf(outputF, "%ld ", matrix[i][j]);
         }
-        fprintf(myOutputF, "\n");
+        fprintf(outputF, "\n");
     }
-    fclose(myOutputF);
+    fclose(outputF);
 }
 
 /**
@@ -141,6 +141,7 @@ void sortMatrix(long **matrix) {
             currentRow_orNextRow = (j + 1) / 5;
             nextColumn = (j + 1) % 5;
 
+            //simple swap algorithm
             if (matrix[currentRow][currentColumn] > matrix[currentRow_orNextRow][nextColumn]) {
                 temp = matrix[currentRow][currentColumn];
                 matrix[currentRow][currentColumn] = matrix[currentRow_orNextRow][nextColumn];
@@ -152,7 +153,7 @@ void sortMatrix(long **matrix) {
 
 int main(int argc, char **argv) {
 
-    const char *inputFile = "COSC450_P1_Input.txt";
+    const char *inputFile = "COSC450_P1_Data.txt";
     const char *outputFile = "COSC450_P1_Output.txt";
     int numInts = getNumberOfInts(inputFile) / 5;
 
